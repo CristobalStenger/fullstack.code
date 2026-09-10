@@ -1,0 +1,471 @@
+/* ============================================================
+   NexusTech - Hoja de estilos principal
+   Paleta: azules claros + blanco + transparencias
+   ============================================================ */
+
+:root {
+    --nexus-azul: #1b6fd4;
+    --nexus-azul-oscuro: #0f3f7d;
+    --nexus-celeste: #4aa3f0;
+    --nexus-celeste-claro: #d8ecfd;
+    --nexus-blanco: #ffffff;
+    --nexus-texto: #12395f;
+    --nexus-vidrio: rgba(255, 255, 255, 0.55);
+    --nexus-borde: rgba(255, 255, 255, 0.75);
+}
+
+/* Las clases d-flex de Bootstrap usan !important y le ganan al atributo
+   hidden, asi que lo reforzamos para poder esconder filas con JavaScript */
+[hidden] {
+    display: none !important;
+}
+
+body {
+    background-color: var(--nexus-celeste-claro);
+    background-image: linear-gradient(160deg, #f2f9ff 0%, #d8ecfd 45%, #b7dcf8 100%);
+    background-attachment: fixed;
+    background-size: cover;
+    color: var(--nexus-texto);
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+
+/* --- NAVBAR --- */
+.nav-nexus {
+    background-color: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(12px);
+    border-bottom: 2px solid var(--nexus-borde);
+    box-shadow: 0 6px 20px rgba(27, 111, 212, 0.15);
+    padding-top: 12px;
+    padding-bottom: 12px;
+    margin-bottom: 20px;
+}
+
+.nav-nexus .navbar-brand {
+    color: var(--nexus-azul-oscuro) !important;
+    font-weight: bold;
+    font-size: 1.5rem;
+    letter-spacing: 1px;
+}
+
+.nav-nexus .navbar-brand .bi {
+    color: var(--nexus-azul);
+}
+
+.nav-nexus .nav-link,
+.nav-nexus .icon-links a {
+    color: var(--nexus-texto) !important;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+.nav-nexus .nav-link:hover,
+.nav-nexus .icon-links a:hover {
+    color: var(--nexus-azul) !important;
+    transform: translateY(-2px);
+}
+
+.nav-nexus .nav-link.active {
+    color: var(--nexus-azul) !important;
+    border-bottom: 3px solid var(--nexus-celeste);
+}
+
+.nav-nexus .form-control {
+    background-color: rgba(255, 255, 255, 0.8);
+    border: 1px solid var(--nexus-borde);
+}
+
+/* --- BOTONES --- */
+.btn-nexus {
+    background-color: var(--nexus-azul);
+    color: var(--nexus-blanco);
+    border: 2px solid var(--nexus-azul);
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+.btn-nexus:hover {
+    background-color: var(--nexus-blanco);
+    color: var(--nexus-azul);
+    border-color: var(--nexus-azul);
+}
+
+.btn-nexus-claro {
+    background-color: rgba(255, 255, 255, 0.7);
+    color: var(--nexus-azul-oscuro);
+    border: 2px solid var(--nexus-celeste);
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+.btn-nexus-claro:hover {
+    background-color: var(--nexus-celeste);
+    color: var(--nexus-blanco);
+}
+
+/* --- CAJAS DE VIDRIO (translucidez) --- */
+.caja-vidrio {
+    background-color: var(--nexus-vidrio);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--nexus-borde);
+    border-radius: 18px;
+    box-shadow: 0 8px 24px rgba(27, 111, 212, 0.15);
+}
+
+.titulo-seccion {
+    color: var(--nexus-azul-oscuro);
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+/* --- TARJETAS DE PRODUCTO --- */
+.card-producto {
+    background-color: var(--nexus-vidrio);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--nexus-borde);
+    border-radius: 18px;
+    box-shadow: 0 8px 24px rgba(27, 111, 212, 0.12);
+    transition: 0.2s;
+}
+
+.card-producto:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 30px rgba(27, 111, 212, 0.25);
+}
+
+/* Contenedor de la imagen del producto */
+.caja-imagen {
+    height: 190px;
+    margin: 12px;
+    padding: 10px;
+    border-radius: 14px;
+    background-color: rgba(255, 255, 255, 0.85);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.caja-imagen img {
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+}
+
+.precio-producto {
+    color: var(--nexus-azul-oscuro);
+    font-weight: bold;
+}
+
+.badge-nexus {
+    background-color: rgba(27, 111, 212, 0.85);
+    color: var(--nexus-blanco);
+}
+
+.badge-tipo {
+    background-color: rgba(255, 255, 255, 0.8);
+    color: var(--nexus-azul-oscuro);
+    border: 1px solid var(--nexus-celeste);
+}
+
+/* --- CARRUSEL Y PORTADAS --- */
+.portada-nexus {
+    position: relative;
+    overflow: hidden;
+    min-height: 420px;
+    background-color: #0a2342;
+    border: 1px solid var(--nexus-borde);
+    color: #ffffff;
+}
+
+/* La foto va desenfocada y a media opacidad para que no le quite
+   protagonismo al texto del carrusel */
+.fondo-portada {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.5;
+    filter: blur(6px);
+    /* el desenfoque aclara los bordes, la escala los deja fuera de la caja */
+    transform: scale(1.1);
+}
+
+/* El texto se dibuja por encima de la foto */
+.contenido-portada {
+    position: relative;
+}
+
+.portada-nexus h1,
+.portada-nexus p,
+.portada-nexus .bi {
+    color: #ffffff;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
+}
+
+/* Boton blanco, para que resalte sobre la foto oscura */
+.btn-portada {
+    background-color: #ffffff;
+    color: var(--nexus-azul-oscuro);
+    border: 2px solid #ffffff;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+.btn-portada:hover {
+    background-color: var(--nexus-celeste);
+    color: #ffffff;
+    border-color: var(--nexus-celeste);
+}
+
+.card-categoria {
+    background-color: var(--nexus-vidrio);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--nexus-borde);
+    border-radius: 18px;
+    box-shadow: 0 8px 24px rgba(27, 111, 212, 0.12);
+    transition: 0.2s;
+    text-align: center;
+    padding: 30px 15px;
+    height: 100%;
+}
+
+.card-categoria:hover {
+    transform: translateY(-6px);
+    background-color: rgba(255, 255, 255, 0.75);
+}
+
+.card-categoria .bi {
+    font-size: 3rem;
+    color: var(--nexus-azul);
+}
+
+.card-categoria h3 {
+    color: var(--nexus-azul-oscuro);
+    font-weight: bold;
+    margin-top: 12px;
+    font-size: 1.3rem;
+}
+
+.card-categoria p {
+    color: var(--nexus-texto);
+}
+
+/* --- FILTROS --- */
+.barra-filtros {
+    background-color: var(--nexus-vidrio);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--nexus-borde);
+    border-radius: 16px;
+    padding: 18px;
+    margin-bottom: 25px;
+}
+
+.barra-filtros .form-label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--nexus-azul-oscuro);
+}
+
+.barra-filtros .form-select,
+.barra-filtros .form-control {
+    background-color: rgba(255, 255, 255, 0.85);
+    border: 1px solid var(--nexus-celeste);
+}
+
+/* --- TABLA DEL CARRITO --- */
+.tabla-carrito {
+    background-color: var(--nexus-vidrio);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--nexus-borde);
+    border-radius: 18px;
+    padding: 18px;
+}
+
+.tabla-carrito .table {
+    --bs-table-bg: transparent;
+    color: var(--nexus-texto);
+}
+
+.mini-imagen {
+    width: 55px;
+    height: 55px;
+    padding: 3px;
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.85);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.mini-imagen img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+/* --- LOGIN Y REGISTRO --- */
+.caja-sesion {
+    background-color: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(14px);
+    border: 1px solid var(--nexus-borde);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(27, 111, 212, 0.18);
+    padding: 30px;
+}
+
+.caja-sesion .form-control,
+.caja-sesion .form-select {
+    background-color: rgba(255, 255, 255, 0.85);
+    border: 1px solid var(--nexus-celeste);
+}
+
+.nav-sesion .nav-link {
+    color: var(--nexus-texto);
+    font-weight: bold;
+}
+
+.nav-sesion .nav-link.active {
+    background-color: var(--nexus-azul) !important;
+    color: var(--nexus-blanco) !important;
+}
+
+/* --- FOOTER --- */
+.footer-nexus {
+    background-color: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(10px);
+    border-top: 2px solid var(--nexus-borde);
+    color: var(--nexus-texto);
+}
+
+/* ============================================================
+   VISTAS AGREGADAS: detalle, blogs, contacto y administrador
+   ============================================================ */
+
+/* --- AYUDAS DE VALIDACION EN TIEMPO REAL --- */
+.ayuda-campo {
+    display: block;
+    min-height: 18px;
+    font-size: 0.82rem;
+    color: #b02a37;
+    margin-top: 3px;
+}
+
+.ayuda-campo.ayuda-ok {
+    color: #146c43;
+}
+
+/* --- DETALLE DE PRODUCTO --- */
+.caja-imagen-grande {
+    height: 340px;
+    padding: 15px;
+    border-radius: 16px;
+    background-color: rgba(255, 255, 255, 0.85);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.caja-imagen-grande img {
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+}
+
+.enlace-producto {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+}
+
+.enlace-producto:hover h2 {
+    color: var(--nexus-azul);
+}
+
+/* --- BLOGS --- */
+.caja-imagen-blog {
+    height: 180px;
+    border-radius: 14px 14px 0 0;
+    background-color: rgba(255, 255, 255, 0.6);
+    overflow: hidden;
+}
+
+.caja-imagen-blog img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* En el detalle del blog la imagen es mas alta y va redondeada completa */
+.caja-imagen-blog-grande {
+    height: 320px;
+    border-radius: 16px;
+}
+
+/* --- ADMINISTRADOR --- */
+.menu-lateral {
+    background-color: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--nexus-borde);
+    border-radius: 18px;
+    padding: 18px;
+}
+
+.menu-lateral h2 {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: var(--nexus-azul-oscuro);
+    border-bottom: 2px solid var(--nexus-celeste);
+    padding-bottom: 10px;
+}
+
+.menu-lateral a {
+    display: block;
+    padding: 10px 12px;
+    margin-bottom: 6px;
+    border-radius: 10px;
+    color: var(--nexus-texto);
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+.menu-lateral a:hover {
+    background-color: rgba(74, 163, 240, 0.25);
+    color: var(--nexus-azul-oscuro);
+}
+
+.menu-lateral a.activo {
+    background-color: var(--nexus-azul);
+    color: var(--nexus-blanco);
+}
+
+.tarjeta-dato {
+    background-color: var(--nexus-vidrio);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--nexus-borde);
+    border-radius: 16px;
+    padding: 20px;
+    text-align: center;
+}
+
+.tarjeta-dato .bi {
+    font-size: 2rem;
+    color: var(--nexus-azul);
+}
+
+.tarjeta-dato .numero {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: var(--nexus-azul-oscuro);
+}
+
+.aviso-stock {
+    color: #b02a37;
+    font-weight: bold;
+}

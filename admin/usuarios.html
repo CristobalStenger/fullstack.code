@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listado de usuarios - NexusTech</title>
+    <!-- Bootstrap CSS e Iconos -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <!-- CSS propio -->
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+
+<body>
+
+    <!-- Barra superior del administrador -->
+    <header>
+        <nav class="navbar nav-nexus">
+            <div class="container">
+                <a class="navbar-brand d-flex align-items-center" href="index.html">
+                    <i class="bi bi-cpu-fill fs-3 me-2"></i>
+                    <span>NexusTech <small class="fw-normal">Administracion</small></span>
+                </a>
+                <div class="d-flex align-items-center gap-3 icon-links">
+                    <span><i class="bi bi-person-badge me-1"></i><span id="nombre-admin"></span></span>
+                    <a href="../index.html" title="Ver la tienda"><i class="bi bi-shop fs-5"></i></a>
+                    <button class="btn btn-sm btn-nexus-claro" onclick="cerrarSesion()">Salir</button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container my-4">
+        <div class="row g-4">
+
+            <!-- Menu vertical -->
+            <div class="col-12 col-lg-3">
+                <nav class="menu-lateral">
+                    <h2 class="mb-3">Menu</h2>
+                    <a href="index.html" class=""><i class="bi bi-speedometer2 me-2"></i>Inicio</a>
+                    <a href="productos.html" class=""><i class="bi bi-box-seam me-2"></i>Listado de productos</a>
+                    <a href="producto-nuevo.html" class=" solo-admin"><i class="bi bi-plus-square me-2"></i>Nuevo producto</a>
+                    <a href="producto-editar.html" class=" solo-admin"><i class="bi bi-pencil-square me-2"></i>Editar producto</a>
+                    <a href="usuarios.html" class="activo"><i class="bi bi-people me-2"></i>Listado de usuarios</a>
+                    <a href="usuario-nuevo.html" class=" solo-admin"><i class="bi bi-person-plus me-2"></i>Nuevo usuario</a>
+                    <a href="usuario-editar.html" class=" solo-admin"><i class="bi bi-pencil-square me-2"></i>Editar usuario</a>
+                    <a href="../index.html"><i class="bi bi-shop me-2"></i>Volver a la tienda</a>
+                </nav>
+            </div>
+
+            <!-- Contenido -->
+            <div class="col-12 col-lg-9">
+
+                <section class="caja-vidrio p-4 mb-4 d-flex flex-wrap justify-content-between align-items-center gap-2">
+                    <div>
+                        <h1 class="fw-bold mb-0">Listado de usuarios</h1>
+                        <p class="mb-0">Usuarios registrados en el sistema y su rol.</p>
+                    </div>
+                    <a href="usuario-nuevo.html" class="btn btn-nexus solo-admin">
+                        <i class="bi bi-plus-lg me-1"></i>Nuevo usuario
+                    </a>
+                </section>
+
+                <section class="tabla-carrito table-responsive">
+                    <table class="table align-middle mb-0">
+                        <thead>
+                            <tr>
+                                <th>RUN</th>
+                                <th>Nombre</th>
+                                <th>Apellidos</th>
+                                <th>Correo</th>
+                                <th>Tipo</th>
+                                <th>Comuna</th>
+                                <th class="text-center solo-admin">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabla-usuarios">
+                            <!-- Las filas se cargan desde js/admin.js -->
+                        </tbody>
+                    </table>
+                </section>
+
+            </div>
+
+        </div>
+    </main>
+
+    <!-- PIE DE PAGINA -->
+    <footer class="footer-nexus text-center p-4 mt-5">
+        <p class="mb-1 fw-bold"><i class="bi bi-cpu-fill me-1"></i> NexusTech</p>
+        <ul class="list-unstyled d-flex flex-wrap justify-content-center gap-3 mb-2">
+            <li><a href="../index.html">Inicio</a></li>
+            <li><a href="../catalogo.html">Productos</a></li>
+            <li><a href="../nosotros.html">Nosotros</a></li>
+            <li><a href="../blogs.html">Blogs</a></li>
+            <li><a href="../contacto.html">Contacto</a></li>
+        </ul>
+        <p class="mb-0">&copy; 2026 NexusTech. Tienda de tecnologia, componentes y gaming.</p>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/catalogo.js"></script>
+    <script src="../js/regiones.js"></script>
+    <script src="../js/validaciones.js"></script>
+    <script src="../js/main.js"></script>
+    <script src="../js/admin.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nosotros - NexusTech</title>
+    <!-- Bootstrap CSS e Iconos -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <!-- CSS propio -->
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+
+    <!-- Encabezado y Navegacion -->
+    <header>
+        <nav class="navbar navbar-expand-lg nav-nexus">
+            <div class="container">
+
+                <!-- Logo de la tienda -->
+                <a class="navbar-brand d-flex align-items-center" href="index.html">
+                    <i class="bi bi-cpu-fill fs-3 me-2"></i>
+                    <span>NexusTech</span>
+                </a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Activar navegacion">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
+                        <li class="nav-item"><a class="nav-link" href="catalogo.html">Productos</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="nosotros.html">Nosotros</a></li>
+                        <li class="nav-item"><a class="nav-link" href="blogs.html">Blogs</a></li>
+                        <li class="nav-item"><a class="nav-link" href="contacto.html">Contacto</a></li>
+                    </ul>
+
+                    <!-- Sesion y carrito de compra -->
+                    <div class="d-flex align-items-center gap-3 mt-3 mt-lg-0 icon-links">
+                        <span id="zona-usuario" class="d-flex align-items-center" data-ruta=""></span>
+                        <a href="carrito.html" title="Ver Carrito" class="position-relative">
+                            <i class="bi bi-cart3 fs-4"></i>
+                            <span id="cart-count"
+                                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">0</span>
+                        </a>
+                        <a href="login.html" title="Ingresar o registrarse"><i class="bi bi-person-circle fs-4"></i></a>
+                    </div>
+                </div>
+
+            </div>
+        </nav>
+    </header>
+
+    <main class="container my-4">
+
+        <section class="caja-vidrio text-center p-4 mb-4">
+            <h1 class="fw-bold"><i class="bi bi-people-fill me-3"></i>Sobre NexusTech</h1>
+            <p class="mb-0">Quienes somos y quienes estamos detras de la tienda.</p>
+        </section>
+
+        <section class="caja-vidrio p-4 mb-4">
+            <h2 class="h3 fw-bold">La empresa</h2>
+            <p>NexusTech es una tienda chilena dedicada a la venta de tecnologia para armar, mejorar y
+                disfrutar tu equipo. Partimos el año 2024 como un taller pequeño de armado de computadores
+                y hoy somos una tienda en linea con despacho a todo el pais.</p>
+            <p>Trabajamos con cuatro lineas de productos: componentes de PC, perifericos, consolas y
+                notebooks. Todos nuestros productos son nuevos, con garantia oficial del fabricante.</p>
+
+            <h2 class="h3 fw-bold mt-4">Nuestra mision</h2>
+            <p>Que cualquier persona pueda armar el equipo que necesita, sin pagar de mas y sin tener que
+                ser experta en hardware para lograrlo.</p>
+
+            <h2 class="h3 fw-bold mt-4">Nuestra vision</h2>
+            <p>Ser la tienda de tecnologia mas recomendada de Chile por su asesoria honesta y su servicio
+                de postventa.</p>
+
+            <h2 class="h3 fw-bold mt-4">En que nos diferenciamos</h2>
+            <ul>
+                <li>Asesoria gratuita para elegir componentes compatibles entre si.</li>
+                <li>Armado sin costo al comprar tres o mas componentes.</li>
+                <li>Garantia oficial de 12 meses en todo el catalogo.</li>
+                <li>Despacho a todo Chile en 48 horas habiles.</li>
+                <li>Pago con debito, credito y hasta en 6 cuotas.</li>
+            </ul>
+        </section>
+
+        <section class="mb-4">
+            <h2 class="titulo-seccion">El equipo de desarrollo</h2>
+            <div class="row g-4 justify-content-center">
+
+                <div class="col-12 col-md-4">
+                    <div class="card-categoria">
+                        <i class="bi bi-code-slash"></i>
+                        <h3>Cristóbal Stenger</h3>
+                        <p class="mb-1"><strong>Desarrollo Front-End</strong></p>
+                        <p class="mb-0">Estructura HTML, hojas de estilo CSS y maquetacion responsiva del sitio.</p>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-4">
+                    <div class="card-categoria">
+                        <i class="bi bi-person-workspace"></i>
+                        <h3>Xavier Marin</h3>
+                        <p class="mb-1"><strong>Logica de negocio</strong></p>
+                        <p class="mb-0">Arreglo de productos, carrito de compras y validacion de formularios.</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- PIE DE PAGINA -->
+    <footer class="footer-nexus text-center p-4 mt-5">
+        <p class="mb-1 fw-bold"><i class="bi bi-cpu-fill me-1"></i> NexusTech</p>
+        <ul class="list-unstyled d-flex flex-wrap justify-content-center gap-3 mb-2">
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="catalogo.html">Productos</a></li>
+            <li><a href="nosotros.html">Nosotros</a></li>
+            <li><a href="blogs.html">Blogs</a></li>
+            <li><a href="contacto.html">Contacto</a></li>
+        </ul>
+        <p class="mb-0">&copy; 2026 NexusTech. Tienda de tecnologia, componentes y gaming.</p>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/main.js"></script>
+</body>
+
+</html>
