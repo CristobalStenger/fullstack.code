@@ -689,3 +689,22 @@ a:focus-visible > .card-categoria {
         border: 1px solid #ccc;
     }
 }
+
+/* .card-body de Bootstrap necesita las variables de .card para su padding */
+.card-producto .card-body {
+    padding: 0 1rem 1rem;
+}
+
+/* En pantallas chicas el menú del panel se muestra como botones en fila */
+@media (max-width: 991.98px) {
+    .menu-lateral h2,
+    .menu-lateral .separador {
+        display: none;
+    }
+
+    .menu-lateral a {
+        display: inline-block;
+        margin-right: 4px;
+        padding: 6px 10px;
+    }
+}

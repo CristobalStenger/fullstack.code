@@ -20,7 +20,7 @@ export default function FiltrosCatalogo({
   return (
     <div className="barra-filtros">
       <Row className="g-3 align-items-end">
-        <Col xs={12} md={6} lg={mostrarCategoria ? 3 : 4}>
+        <Col xs={12} md={6} lg={mostrarCategoria ? 4 : 6}>
           <Form.Group controlId="filtro-texto">
             <Form.Label>Buscar producto</Form.Label>
             <Form.Control
@@ -71,7 +71,7 @@ export default function FiltrosCatalogo({
             </Form.Select>
           </Form.Group>
         </Col>
-        <Col xs={6} md={4} lg={mostrarCategoria ? 1 : 2}>
+        <Col xs={6} md={4} lg={2}>
           <Form.Group controlId="filtro-disponibilidad">
             <Form.Label>Stock</Form.Label>
             <Form.Select value={filtros.disponibilidad} onChange={cambiar('disponibilidad')}>
@@ -81,7 +81,7 @@ export default function FiltrosCatalogo({
             </Form.Select>
           </Form.Group>
         </Col>
-        <Col xs={8} md={3} lg={mostrarCategoria ? 1 : 1}>
+        <Col xs={8} md={3} lg={mostrarCategoria ? 3 : 4}>
           <Form.Group controlId="filtro-orden">
             <Form.Label>Ordenar</Form.Label>
             <Form.Select value={filtros.orden} onChange={cambiar('orden')}>
@@ -93,7 +93,7 @@ export default function FiltrosCatalogo({
             </Form.Select>
           </Form.Group>
         </Col>
-        <Col xs={4} md={1} lg={1}>
+        <Col xs={4} md={1} lg={mostrarCategoria ? 1 : 2}>
           <Button
             variant="nexus-claro"
             className="w-100"
