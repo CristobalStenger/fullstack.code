@@ -76,9 +76,11 @@ export function mensajeRun(valor) {
   return '';
 }
 
+// nombreCampo incluye el artículo ("El nombre", "La calle") para concordar el género
 function mensajeObligatorio(valor, maximo, nombreCampo) {
   const v = texto(valor);
-  if (v === '') return `${nombreCampo} es obligatorio.`;
+  const obligatorio = nombreCampo.startsWith('La ') ? 'obligatoria' : 'obligatorio';
+  if (v === '') return `${nombreCampo} es ${obligatorio}.`;
   if (v.length > maximo) return `${nombreCampo} no puede superar los ${maximo} caracteres.`;
   return '';
 }

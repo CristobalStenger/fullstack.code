@@ -16,12 +16,12 @@ export default function ZonaUsuario() {
   if (!sesion)
     return (
       <div className="d-flex gap-2 flex-wrap">
-        <Button as={Link} to="/login" variant="nexus-claro" size="sm">
+        <Link to="/login" className="btn btn-nexus-claro btn-sm">
           Iniciar sesión
-        </Button>
-        <Button as={Link} to="/registro" variant="nexus" size="sm">
+        </Link>
+        <Link to="/registro" className="btn btn-nexus btn-sm">
           Crear cuenta
-        </Button>
+        </Link>
       </div>
     );
 
@@ -29,9 +29,9 @@ export default function ZonaUsuario() {
     <div className="d-flex gap-2 align-items-center flex-wrap">
       <span className="fw-bold">Hola, {sesion.nombre}</span>
       {puedeVerPanel(sesion) && (
-        <Button as={Link} to="/admin" variant="nexus-claro" size="sm">
+        <Link to="/admin" className="btn btn-nexus-claro btn-sm">
           Panel
-        </Button>
+        </Link>
       )}
       <Button variant="nexus-claro" size="sm" onClick={salir}>
         Salir

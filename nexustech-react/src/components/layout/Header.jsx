@@ -31,18 +31,18 @@ export default function Header() {
 
   return (
     <header>
-      <Navbar expand="lg" className="nav-nexus" collapseOnSelect>
+      <Navbar as="div" expand="lg" className="nav-nexus" collapseOnSelect>
         <Container>
           <Navbar.Brand as={Link} to="/" className="d-flex align-items-center">
             <i className="bi bi-cpu-fill fs-3 me-2" aria-hidden="true"></i>
             <span>NexusTech</span>
           </Navbar.Brand>
-          <Navbar.Toggle aria-controls="menu-principal" aria-label="Abrir navegación" />
+          <Navbar.Toggle aria-controls="menu-principal" label="Abrir navegación" />
           <Navbar.Collapse id="menu-principal" className="flex-wrap">
             <BuscadorHeader />
             <ZonaUsuario />
             <div className="salto-fila d-none d-lg-block"></div>
-            <Nav className="mx-lg-auto mt-2 align-items-lg-center" aria-label="Navegación principal">
+            <Nav as="nav" className="mx-lg-auto mt-2 align-items-lg-center" aria-label="Navegación principal">
               {enlace(inicio)}
               {enlace(productos)}
               <NavDropdown title="Categorías" id="menu-categorias">

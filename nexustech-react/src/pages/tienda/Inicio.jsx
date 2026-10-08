@@ -37,7 +37,7 @@ export default function Inicio() {
 
       {ofertas.length > 0 && (
         <section className="mb-5">
-          <h2 className="titulo-seccion">Ofertas de la semana</h2>
+          <h2 className="titulo-seccion">Productos en oferta</h2>
           <ProductoGrid productos={ofertas} alAgregar={agregar} />
           <div className="text-center mt-4">
             <Link to="/ofertas" className="btn btn-nexus-claro px-4">
