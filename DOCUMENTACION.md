@@ -19,6 +19,7 @@ Este documento explica todo el proyecto NexusTech, con tres focos:
 2. [Cómo ejecutar el proyecto](#2-cómo-ejecutar-el-proyecto)
 3. [Punto de partida: la entrega 1 en HTML, CSS y JS](#3-punto-de-partida-la-entrega-1-en-html-css-y-js)
 4. [La migración a React + Vite](#4-la-migración-a-react--vite)
+   - [4.5 Guía de componentes de React](#45-guía-de-componentes-de-react)
 5. [Funciones nuevas y pestañas](#5-funciones-nuevas-y-pestañas)
 6. [Pruebas unitarias](#6-pruebas-unitarias)
 7. [Verificación manual](#7-verificación-manual)
@@ -74,7 +75,7 @@ su propia carpeta, igual que el proyecto de ejemplo de la guía del curso.
 | ----------------------------- | ----------------------------------- | -------------------------------------------------- |
 | Páginas o vistas              | 21 archivos HTML                    | 35 páginas (16 de tienda + 19 de administración)    |
 | Archivos de lógica            | 7 archivos JS (≈2.270 líneas)       | 101 módulos JS/JSX (≈6.550 líneas, incluye datos)  |
-| Componentes reutilizables     | 0 (cabecera y pie copiados 21 veces) | 37 componentes                                    |
+| Componentes reutilizables     | 0 (cabecera y pie copiados 21 veces) | 37 componentes + 5 hooks propios                   |
 | Pruebas automatizadas         | 0                                   | 160 (≈1.700 líneas)                                |
 
 ---
@@ -449,7 +450,206 @@ Así se mantiene la identidad visual "glass" en tonos azules. Se agregaron estil
 React Bootstrap genera la clase `btn-<variante>`, así que los estilos propios se usan con
 `<Button variant="nexus">` y `<Button variant="nexus-claro">`.
 
-### 4.5 Flujo de datos
+### 4.5 Guía de componentes de React
+
+Esta es la parte nueva de la Evaluación 2, así que se explica con detalle. La aplicación tiene
+**37 componentes reutilizables** en `src/components/`, **35 páginas** en `src/pages/` (que también
+son componentes), **5 hooks propios** y **2 providers**.
+
+#### a) Qué es un componente, una prop y un estado
+
+| Concepto               | Qué es                                                                                       | Ejemplo en NexusTech                                                                     |
+| ---------------------- | -------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| **Componente**         | Una función con nombre en mayúscula que devuelve JSX (lo que se dibuja)                      | `ProductoCard` dibuja un producto                                                        |
+| **Props**              | Datos y funciones que el componente **recibe del padre**. Son de solo lectura               | `<ProductoCard producto={p} alAgregar={agregar} />`                                      |
+| **Estado** (`useState`) | Datos que el componente **recuerda** y que, al cambiar, vuelven a dibujarlo                | `BuscadorHeader` recuerda el texto que escribes                                          |
+| **Composición**        | Un componente usa a otros dentro de su JSX                                                   | `ProductoGrid` usa `ProductoCard`, que usa `PrecioProducto` y `StockBadge`               |
+| **`children`**         | Contenido que el padre escribe entre las etiquetas del componente                            | `<ConfirmarModal>¿Seguro?</ConfirmarModal>`                                              |
+| **Hook**               | Función que empieza con `use` y da a un componente poderes de React (estado, contexto, rutas) | `useState`, `useAuth`, `useNavigate`                                                     |
+
+**Responsabilidad única (nota del PDF):** cada componente hace una sola cosa. `PrecioProducto`
+solo muestra un precio, `StockBadge` solo el estado del stock, `ConfirmarModal` solo pide
+confirmación. Por eso se reutilizan en la tienda y en el panel, y se prueban por separado.
+
+#### b) Árbol de componentes
+
+```
+main.jsx
+└─ BrowserRouter
+   └─ App
+      └─ AuthProvider                       ← estado de usuarios y sesión
+         └─ TiendaProvider                  ← estado de productos, carrito y órdenes
+            └─ Routes
+               ├─ Layout  (rutas de la tienda)
+               │  ├─ Header
+               │  │  ├─ BuscadorHeader     (estado propio: texto)
+               │  │  ├─ ZonaUsuario
+               │  │  └─ BotonCarrito
+               │  ├─ AvisosGlobales
+               │  ├─ <Outlet />            ← aquí se dibuja la página de la ruta
+               │  │    Inicio → HeroCarousel, CategoriaCard, ProductoGrid → ProductoCard → PrecioProducto + StockBadge
+               │  │    Productos → FiltrosCatalogo + ProductoGrid
+               │  │    Carrito → FilaCarrito, ResumenCompra, ConfirmarModal
+               │  │    Checkout → TablaItemsCompra, CampoFormulario, SelectorRegionComuna, ResumenCompra
+               │  └─ Footer
+               └─ RutaProtegida → AdminLayout  (rutas de /admin)
+                  ├─ AdminSidebar
+                  ├─ AvisosGlobales
+                  └─ <Outlet />            ← Dashboard, ProductosAdmin, UsuariosAdmin, ...
+                       ProductoForm / UsuarioForm / CategoriaForm → CampoFormulario
+```
+
+#### c) Fichas de los 37 componentes
+
+Cada ficha indica la **responsabilidad**, las **props** que recibe (las que tienen `=` traen un
+valor por defecto), si tiene **estado propio** y dónde se **usa**.
+
+**`components/layout/`: estructura de la página**
+
+| Componente        | Responsabilidad                                                                                    | Props                            | Estado propio                              | Se usa en              |
+| ----------------- | -------------------------------------------------------------------------------------------------- | -------------------------------- | ------------------------------------------ | ---------------------- |
+| `Layout`          | Estructura de la tienda: enlace "saltar al contenido", cabecera, avisos, `<Outlet />` y pie        | —                                | No (usa `useCambioDeRuta` para el foco)    | `App`                  |
+| `Header`          | Barra de dos filas con buscador, sesión, menú, desplegable de categorías y carrito                 | —                                | No (lee las categorías con `useTienda`)    | `Layout`               |
+| `BuscadorHeader`  | Formulario de búsqueda que lleva a `/productos?q=texto`                                            | —                                | **Sí**: `texto` (input controlado)         | `Header`               |
+| `ZonaUsuario`     | Muestra "Iniciar sesión / Crear cuenta" o "Hola, nombre", "Panel" y "Salir"                        | —                                | No (lee la sesión con `useAuth`)           | `Header`               |
+| `BotonCarrito`    | Botón verde con el total en pesos y la insignia de unidades                                        | —                                | No (valor derivado con `resumenCarrito`)   | `Header`               |
+| `Footer`          | Pie de página con enlaces                                                                          | —                                | No                                         | `Layout`               |
+| `AdminLayout`     | Estructura del panel: barra oscura, menú lateral y `<Outlet />`                                    | —                                | No                                         | `App`                  |
+| `RutaProtegida`   | Decide si deja pasar (`<Outlet />`), redirige al login o muestra "acceso denegado" según el rol    | `roles` (arreglo de roles)       | No                                         | `App` (anidada dos veces) |
+| `AccesoDenegado`  | Mensaje cuando el rol no tiene permiso                                                             | `tipo`                           | No                                         | `RutaProtegida`        |
+
+**`components/producto/`: catálogo**
+
+| Componente         | Responsabilidad                                                                           | Props                                                                                       | Estado propio | Se usa en                                        |
+| ------------------ | ----------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | ------------- | ------------------------------------------------ |
+| `ProductoCard`     | Tarjeta de un producto; avisa al padre cuando se pulsa "Agregar"                          | `producto`, `alAgregar(id)`                                                                 | No            | `ProductoGrid`                                   |
+| `ProductoGrid`     | Convierte un arreglo de productos en una grilla de tarjetas, o muestra el mensaje vacío   | `productos`, `alAgregar`, `mensajeVacio = '...'`                                            | No            | Inicio, Productos, Categorías, Ofertas, Detalle  |
+| `FiltrosCatalogo`  | Barra de filtros **controlada**: informa cada cambio al padre                             | `filtros`, `onCambio(campo, valor)`, `onLimpiar`, `categorias = []`, `tipos = []`, `mostrarCategoria = true`, `resultados` | No (el estado vive en el padre) | Productos, Categorías |
+| `PrecioProducto`   | Precio final; con oferta agrega el precio anterior tachado y el porcentaje                | `producto`, `className = 'fs-5'`                                                            | No            | Tarjeta, Detalle, Panel (ficha y formulario)     |
+| `StockBadge`       | Insignia verde, amarilla o roja según el stock                                            | `producto`                                                                                  | No            | Tarjeta, Detalle, Panel                          |
+| `CategoriaCard`    | Tarjeta de una categoría con enlace a `/categorias/:slug`                                 | `categoria`, `cantidad`, `activa = false`                                                   | No            | Inicio, Categorías                               |
+
+**`components/compra/`: carrito, checkout y boleta**
+
+| Componente          | Responsabilidad                                                                       | Props                                                                      | Estado propio | Se usa en                              |
+| ------------------- | ------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- | ------------- | -------------------------------------- |
+| `FilaCarrito`       | Fila del carrito con los botones `−` y `+` y eliminar; marca en rojo si el stock bajó | `item`, `alCambiar(cantidad)`, `alQuitar()`                                | No            | `Carrito`                              |
+| `TablaItemsCompra`  | Tabla de solo lectura con los productos de una compra                                 | `items`                                                                    | No            | Checkout, `ResultadoCompra`            |
+| `ResumenCompra`     | Subtotal, descuento del cupón, envío y total                                          | `subtotal`, `descuento = 0`, `envio`, `total`, `cupon`, `textoTotal = 'TOTAL'` | No        | Carrito, Checkout, `ResultadoCompra`   |
+| `DatosOrden`        | Datos del cliente y de la entrega de una orden, en campos de solo lectura             | `orden`                                                                    | No            | `ResultadoCompra`                      |
+| `ResultadoCompra`   | Estructura común de "compra exitosa", "pago con error" y boleta del panel             | `orden`, `icono`, `claseIcono`, `titulo`, `subtitulo`, `acciones`, `children` | No         | CompraExitosa, CompraError, DetalleOrden |
+
+**`components/formularios/`: formularios**
+
+| Componente             | Responsabilidad                                                                                 | Props                                                                                         | Estado propio                                  | Se usa en                                 |
+| ---------------------- | ----------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | ---------------------------------------------- | ----------------------------------------- |
+| `CampoFormulario`      | Campo con etiqueta, ayuda, borde de error o éxito y mensaje enlazado con `aria-describedby`     | `id`, `etiqueta`, `ayuda`, `error`, `valido`, `as` (`input`, `textarea` o `select`), `className`, y el resto pasa al input | No | Todos los formularios        |
+| `SelectorRegionComuna` | Dos listas dependientes: al cambiar la región se reinicia la comuna                             | `prefijo`, `region`, `comuna`, `errores`, `onCambio`, `disabled`                              | No                                             | `UsuarioForm`, Checkout                   |
+| `UsuarioForm`          | Formulario de usuario con tres modos: `registro`, `admin` y `perfil`                            | `inicial`, `usuarios`, `runOriginal`, `modo = 'admin'`, `textoBoton`, `onGuardar`, `onCancelar` | Sí, mediante `useFormulario`                | Registro, Nuevo y Editar usuario, Perfil  |
+| `ProductoForm`         | Crear (producto `null`) o editar un producto, con vista previa del precio                       | `producto = null`, `productos`, `categorias`, `onGuardar`, `onCancelar`                       | Sí, mediante `useFormulario`                   | Nuevo y Editar producto                   |
+| `CategoriaForm`        | Crear o editar una categoría; muestra la dirección (slug) que se generará                       | `categoria = null`, `categorias`, `onGuardar`, `onCancelar`                                   | Sí, mediante `useFormulario`                   | Nueva y Editar categoría                  |
+
+**`components/admin/`: panel de administración**
+
+| Componente         | Responsabilidad                                                                  | Props                                                    | Estado propio | Se usa en                                             |
+| ------------------ | -------------------------------------------------------------------------------- | -------------------------------------------------------- | ------------- | ----------------------------------------------------- |
+| `AdminSidebar`     | Menú lateral; oculta Usuarios y Reportes al Vendedor y trae "Cerrar sesión"      | —                                                        | No            | `AdminLayout`                                         |
+| `EncabezadoAdmin`  | Título de cada vista del panel con botones de acción opcionales                  | `titulo`, `children`, `acciones`                         | No            | Todas las páginas del panel                           |
+| `TarjetaMetrica`   | Tarjeta de color con una cifra (compras, productos, usuarios…)                   | `titulo`, `valor`, `detalle`, `icono`, `variante = 'primary'` | No       | Dashboard, Reportes, Historial                        |
+| `TablaOrdenes`     | Tabla de órdenes con enlace a la boleta                                          | `ordenes`                                                | No            | Dashboard, Órdenes, Historial de compras              |
+| `EstadoOrdenBadge` | Insignia "Pagada" o "Rechazada"                                                  | `estado`                                                 | No            | `TablaOrdenes`, Detalle de orden                      |
+| `RolBadge`         | Insignia de color según el rol                                                   | `tipo`                                                   | No            | Usuarios, Ficha de usuario, Perfil                    |
+
+**`components/comunes/` y `components/contenido/`: piezas genéricas**
+
+| Componente         | Responsabilidad                                                                                  | Props                                                                                | Estado propio | Se usa en                                          |
+| ------------------ | ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | ------------- | -------------------------------------------------- |
+| `ConfirmarModal`   | Modal de confirmación: se abre con una prop y avisa con `confirmar` o `cancelar`                 | `abierto`, `titulo`, `children`, `textoConfirmar = 'Confirmar'`, `variante = 'danger'`, `confirmar`, `cancelar` | No (lo abre el padre) | Carrito, listados del panel |
+| `EstadoVacio`      | Mensaje con ícono cuando una lista no tiene elementos                                            | `icono = 'bi-search'`, `titulo`, `children`                                          | No            | `ProductoGrid`, Carrito, páginas "no existe"       |
+| `EncabezadoPagina` | Caja de título de las páginas de la tienda                                                       | `icono`, `titulo`, `children`                                                        | No            | Páginas de la tienda                               |
+| `AvisosGlobales`   | Notificaciones `Toast` (reemplazan los `alert()`) y aviso si no se pudo guardar en el navegador  | —                                                                                    | No (lee los avisos del estado global) | `Layout`, `AdminLayout`    |
+| `HeroCarousel`     | Carrusel de portada con las diapositivas de `data/portada.js`                                    | `diapositivas`                                                                       | No            | `Inicio`                                           |
+| `BlogCard`         | Tarjeta de un artículo con enlace a `/blogs/:id`                                                 | `blog`                                                                               | No            | `Blogs`                                            |
+
+Solo **`BuscadorHeader`** guarda estado directamente y los tres formularios lo guardan a través
+de `useFormulario`. El resto son componentes **de presentación**: reciben datos por props y los
+muestran, sin estado propio. Eso los hace simples de entender, de reutilizar y de probar.
+
+#### d) Estado: dónde vive cada dato
+
+| Tipo de dato                                              | Dónde vive                               | Ejemplos                                                                                   |
+| --------------------------------------------------------- | ---------------------------------------- | ------------------------------------------------------------------------------------------ |
+| Lo comparten varias pantallas                             | **Context + `useReducer`** (global)      | Productos, categorías, órdenes, carrito, cupón (`TiendaProvider`); usuarios y sesión (`AuthProvider`) |
+| Solo afecta a una pantalla                                | **`useState`** en la página              | Filtros del catálogo, cupón escrito en el carrito, modal abierto, texto de búsqueda en las tablas, "boleta enviada" |
+| Valores y errores de un formulario                        | **`useFormulario`** (hook propio)        | Login, registro, contacto, checkout y formularios del panel                                |
+| Debe poder compartirse o recargarse                       | **La URL**                               | `/productos/7` (parámetro `:id`), `/productos?q=ryzen` (parámetro de búsqueda)             |
+| Debe sobrevivir al cerrar la página                       | **`localStorage`** (vía `persistencia.js`) | Todo lo global                                                                           |
+| Se puede calcular a partir de otro dato                   | **No se guarda: se calcula**             | Total del carrito, unidades, precio con descuento, estado del stock, métricas del dashboard |
+
+**Patrones usados**
+
+- **Levantar el estado ("lifting state up"):** `FiltrosCatalogo` no guarda los filtros; los recibe
+  del padre (`Productos`) y le avisa con `onCambio`. Así el padre filtra los productos con el mismo valor.
+- **Componente controlado:** el valor de cada `<input>` viene del estado y `onChange` lo actualiza.
+- **Reiniciar estado con `key`:** `<FichaProducto key={producto.id}>` y `<ProductoForm key={producto.id}>`
+  hacen que React cree el componente de cero al cambiar de producto, y se reinicia la cantidad o el formulario.
+- **Renderizado condicional:** `ConfirmarModal` aparece solo con `abierto`, `PrecioProducto` tacha el
+  precio solo si hay oferta y `RutaProtegida` decide qué mostrar según la sesión.
+- **Valores por defecto en props:** `ProductoGrid` usa `mensajeVacio = '...'` si el padre no envía uno.
+- **Composición con `children`:** `ConfirmarModal`, `EstadoVacio`, `EncabezadoAdmin` y `ResultadoCompra`
+  dejan que el padre decida el contenido interno.
+- **Polimorfismo con `as`:** `CampoFormulario` puede ser un `input`, un `textarea` o un `select`
+  sin repetir la etiqueta ni el manejo de errores.
+- **Un solo formulario para crear y editar:** `ProductoForm` recibe `producto = null` para crear
+  o un objeto para editar, y `UsuarioForm` cambia con la prop `modo`.
+
+**Ejemplo completo: el recorrido de "Agregar al carrito"**
+
+```jsx
+// 1) Página (Productos.jsx): lee el estado global y entrega una función al hijo
+const { estado, dispatch } = useTienda();
+<ProductoGrid productos={visibles} alAgregar={(id) => dispatch({ type: 'AGREGAR', id })} />
+
+// 2) ProductoGrid: recorre el arreglo y pasa las props a cada tarjeta
+{productos.map((producto) => (
+  <Col key={producto.id}><ProductoCard producto={producto} alAgregar={alAgregar} /></Col>
+))}
+
+// 3) ProductoCard: el clic llama a la función recibida por props
+<Button disabled={agotado} onClick={() => alAgregar(producto.id)}>Agregar al carrito</Button>
+
+// 4) tiendaReducer: valida el stock y devuelve el estado nuevo
+// 5) TiendaProvider: guarda en localStorage; BotonCarrito (en el Header) muestra el nuevo total
+```
+
+`ProductoCard` no sabe qué es un carrito: solo avisa que se pulsó el botón. La regla del stock
+vive en el reducer, y el contador de la cabecera se actualiza solo porque lee el mismo estado.
+
+#### e) Hooks propios y providers
+
+| Hook o provider       | Archivo                              | Qué entrega o hace                                                                                                 |
+| --------------------- | ------------------------------------ | ------------------------------------------------------------------------------------------------------------------ |
+| `useTienda()`         | `hooks/useTienda.js`                 | `{ estado, dispatch, errorGuardado }` del estado global de la tienda. Falla con un mensaje claro si se usa fuera de `TiendaProvider` |
+| `useAuth()`           | `hooks/useAuth.js`                   | `usuarios`, `sesion` y las funciones `ingresar`, `registrar`, `guardarUsuario`, `eliminarUsuario`, `cerrarSesion`  |
+| `useFormulario()`     | `hooks/useFormulario.js`             | `valores`, `errores`, `error(campo)`, `valido(campo)`, `cambiar`, `actualizar`, `enviar`, `reiniciar`. Muestra un error solo si el campo fue tocado o se intentó enviar |
+| `useTitulo(titulo)`   | `hooks/useTitulo.js`                 | Cambia el título de la pestaña del navegador en cada página                                                        |
+| `useCambioDeRuta()`   | `components/layout/useCambioDeRuta.js` | Al cambiar de página sube al inicio y mueve el foco al contenido principal (accesibilidad)                       |
+| `TiendaProvider`      | `context/TiendaProvider.jsx`         | Crea el estado con `useReducer(tiendaReducer, undefined, cargarTienda)` y guarda cada cambio con `useEffect`       |
+| `AuthProvider`        | `context/AuthProvider.jsx`           | Igual para usuarios y sesión; además valida los formularios antes de despachar la acción                           |
+| `contextos.js`        | `context/contextos.js`               | Crea `TiendaContext` y `AuthContext` en un archivo sin componentes, para que Vite recargue sin perder el estado    |
+
+**Regla de los hooks:** solo se llaman en el nivel superior de un componente o de otro hook,
+nunca dentro de `if` ni de bucles. ESLint (`eslint-plugin-react-hooks`) lo revisa automáticamente.
+
+#### f) Las páginas también son componentes
+
+Cada ruta de `App.jsx` apunta a una **página** (`Inicio`, `Carrito`, `Dashboard`…). Una página
+actúa como **contenedor**: lee el estado global con `useTienda` o `useAuth`, mantiene su estado
+local y reparte datos a los componentes de presentación. Por ejemplo, `Productos` guarda los
+filtros con `useState`, calcula la lista visible con `filtrarProductos` y se la entrega a
+`FiltrosCatalogo` y `ProductoGrid`.
+
+### 4.6 Flujo de datos
 
 ```mermaid
 flowchart LR
@@ -472,7 +672,7 @@ flowchart LR
 5. Los reducers aplican las reglas con las funciones de `crud.js` y `validaciones.js`.
 6. Un `useEffect` guarda cada cambio. La interfaz se actualiza al instante, sin recargar.
 
-### 4.6 Persistencia
+### 4.7 Persistencia
 
 | Clave                  | Contenido                                                     |
 | ---------------------- | ------------------------------------------------------------- |
@@ -495,7 +695,7 @@ Se mantienen los nombres de clave de la entrega 1. Al cargar, `persistencia.js`:
 - si el navegador rechaza la escritura (por ejemplo, almacenamiento lleno), muestra un aviso y la
   tienda sigue funcionando mientras la página esté abierta.
 
-### 4.7 Reglas de negocio conservadas de la entrega 1
+### 4.8 Reglas de negocio conservadas de la entrega 1
 
 - Correos solo `@duoc.cl`, `@profesor.duoc.cl` y `@gmail.com`.
 - Contraseña de 4 a 10 caracteres.
