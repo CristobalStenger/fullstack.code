@@ -15,5 +15,9 @@ npm ci
 npm run dev
 ```
 
-El documento de cobertura de pruebas está en
-[`nexustech-react/docs/COBERTURA_TESTING.md`](nexustech-react/docs/COBERTURA_TESTING.md).
+Documentación:
+
+- [`DOCUMENTACION.md`](DOCUMENTACION.md): explicación completa del proyecto, la migración de
+  HTML/CSS/JS a React + Vite, las funciones y pestañas nuevas y las pruebas unitarias.
+- [`nexustech-react/docs/COBERTURA_TESTING.md`](nexustech-react/docs/COBERTURA_TESTING.md):
+  documento de cobertura de pruebas.
