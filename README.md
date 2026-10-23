@@ -19,5 +19,9 @@ Documentación:
 
 - [`DOCUMENTACION.md`](DOCUMENTACION.md): explicación completa del proyecto, la migración de
   HTML/CSS/JS a React + Vite, las funciones y pestañas nuevas y las pruebas unitarias.
+- [`nexustech-react/docs/Informe_Proyecto_NexusTech.docx`](nexustech-react/docs/Informe_Proyecto_NexusTech.docx):
+  informe del proyecto en Word (6 páginas).
+- [`nexustech-react/docs/Informe_Pruebas_Unitarias.docx`](nexustech-react/docs/Informe_Pruebas_Unitarias.docx):
+  informe de pruebas unitarias en Word (4 páginas).
 - [`nexustech-react/docs/COBERTURA_TESTING.md`](nexustech-react/docs/COBERTURA_TESTING.md):
   documento de cobertura de pruebas.
