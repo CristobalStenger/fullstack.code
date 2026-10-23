@@ -4,6 +4,9 @@ Tienda de tecnología **NexusTech** migrada desde HTML + JavaScript (entrega 1, 
 repositorio) a **React 19 + Vite 7**. Usa React Router 7 (modo declarativo), React Bootstrap,
 Context + `useReducer`, persistencia en `localStorage` y pruebas con Vitest + Testing Library.
 
+La explicación detallada del proyecto (migración, vistas nuevas y pruebas) está en
+[`../DOCUMENTACION.md`](../DOCUMENTACION.md).
+
 ## Puesta en marcha
 
 Requiere Node.js 20.19 o superior.
